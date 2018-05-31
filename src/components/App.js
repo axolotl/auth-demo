@@ -13,6 +13,7 @@ import {
 import Intro from './Intro';
 import Join from './Join';
 import Login from './Login';
+import Dash from './Dash';
 
 class App extends Component {
   render() {
@@ -33,6 +34,9 @@ class App extends Component {
                     <NavItem>
                       <NavLink href="/login">Login</NavLink>
                     </NavItem>
+                    <NavItem>
+                      <NavLink href="/dash">Dashboad</NavLink>
+                    </NavItem>
                   </Nav>
               </Navbar>
             </Col>
@@ -45,6 +49,7 @@ class App extends Component {
               <Route exact path="/" component={Intro} />
               <Route path="/join" component={Join} />
               <Route path="/login" component={Login} />
+              <Route path="/dash" component={Dash} />
   
             </Col>
             <Col xs="3" />
