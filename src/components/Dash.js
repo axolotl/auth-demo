@@ -6,39 +6,51 @@ import {
   Input,
   Button } from 'reactstrap';
 
+// temp messages to get things up and running
+import messages from './content/messages';
+
 class Dash extends Component {
+  state = {
+    input: '',
+    messages: messages,
+  }
+
+  handleChange = (e) => {
+    this.setState({input: e.target.value});
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.addMessage(this.state.input);
+    this.setState({input: ''});
+  }
+
+  addMessage = (message) => {
+    this.setState({messages: [message, ...this.state.messages]})
+  }
+
   render() {
+    const { input, messages } = this.state;
+    const { handleSubmit, handleChange } = this;
+
     return (
       <div>
         <h4>Messages</h4>
-        <Form>
+
+        <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for="exampleText">To add a new message, write it in the box and click submit.</Label>
-            <Input type="textarea" name="text" id="exampleText" />
+            <Input onChange={handleChange} value={input} type="textarea" name="text" id="exampleText" />
           </FormGroup>
+          <Button>Submit</Button>
         </Form>
 
-        <Button>Submit</Button>
+        
         <p />
 
-        <p>
-          At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
-        </p>
-
-        <p>
-          et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est         </p>
-
-        <p>
-          laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi 
-        </p>   
-
-        <p>
-          optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. 
-        </p>
-
-        <p>
-          Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae 
-        </p>
+        {messages.map((message, i) => (
+          <p key={i}>{message}</p>
+        ))}
 
       </div>
     )
