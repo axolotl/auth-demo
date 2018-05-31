@@ -6,9 +6,7 @@ import {
   Input,
   Button } from 'reactstrap';
 import uuid from 'uuid';
-
-// temp messages to get things up and running
-import messages from './content/messages';
+import axios from 'axios';
 
 // import other components
 import Message from './Message';
@@ -16,7 +14,19 @@ import Message from './Message';
 class Dash extends Component {
   state = {
     input: '',
-    messages: messages,
+    messages: [],
+  }
+
+  componentDidMount() {
+    axios.get(`/api/messages`)
+      .then(res => {
+        const messages = [];
+        res.data.map(message => messages.push({id: message.id, message: message.message}));
+        // sort by most recent added
+        messages.sort((a,b) => b.id-a.id);
+        this.setState({messages});
+      })
+      .catch(err => console.log(err))
   }
 
   handleChange = (e) => {
@@ -33,10 +43,18 @@ class Dash extends Component {
   }
 
   addMessage = (message) => {
+    axios.post(`/api/messages`, {
+      username: 'theofeau',
+      message
+    }).then(res => console.log(res))
+      .catch(err => console.log(err));
     this.setState({messages: [{id: uuid(), message: message}, ...this.state.messages]})
   }
 
   deleteMessage = (id) => {
+    axios.delete(`/api/messages/${id}`)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
     const messages = [];
     this.state.messages.map((message) => {if (message.id !== id) {messages.push(message)}});
     this.setState({messages});
@@ -59,7 +77,7 @@ class Dash extends Component {
 
         </Form>
 
-        {messages.map((message) => <Message key={message.id} id={message.id} message={message.message} deleteMessage={deleteMessage} /> )}
+        {messages && messages.map((message) => <Message key={message.id} id={message.id} message={message.message} deleteMessage={deleteMessage} /> )}
 
       </div>
     )
