@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
 // import styles 
+import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // import components

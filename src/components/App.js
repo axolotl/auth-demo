@@ -42,18 +42,18 @@ class App extends Component {
             </Col>
           </Row>
 
-          <Row>
-            <Col xs="3" />
-            <Col>
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            
+            <div style={{width: '500px'}}>
 
               <Route exact path="/" component={Intro} />
               <Route path="/join" component={Join} />
               <Route path="/login" component={Login} />
               <Route path="/dash" component={Dash} />
   
-            </Col>
-            <Col xs="3" />
-          </Row>
+            </div>
+            
+          </div>
 
         </Container>
       </Router>

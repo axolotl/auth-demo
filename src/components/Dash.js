@@ -5,9 +5,13 @@ import {
   Label,
   Input,
   Button } from 'reactstrap';
+import uuid from 'uuid';
 
 // temp messages to get things up and running
 import messages from './content/messages';
+
+// import other components
+import Message from './Message';
 
 class Dash extends Component {
   state = {
@@ -20,18 +24,27 @@ class Dash extends Component {
   }
 
   handleSubmit = (e) => {
+    const { input } = this.state;
     e.preventDefault();
-    this.addMessage(this.state.input);
-    this.setState({input: ''});
+    if (input.trim().length > 0) {
+      this.addMessage(input);
+      this.setState({input: ''});
+    }
   }
 
   addMessage = (message) => {
-    this.setState({messages: [message, ...this.state.messages]})
+    this.setState({messages: [{id: uuid(), message: message}, ...this.state.messages]})
+  }
+
+  deleteMessage = (id) => {
+    const messages = [];
+    this.state.messages.map((message) => {if (message.id !== id) {messages.push(message)}});
+    this.setState({messages});
   }
 
   render() {
     const { input, messages } = this.state;
-    const { handleSubmit, handleChange } = this;
+    const { handleSubmit, handleChange, deleteMessage } = this;
 
     return (
       <div>
@@ -40,17 +53,13 @@ class Dash extends Component {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for="exampleText">To add a new message, write it in the box and click submit.</Label>
-            <Input onChange={handleChange} value={input} type="textarea" name="text" id="exampleText" />
+            <Input style={{marginBottom: '10px'}} onChange={handleChange} value={input} type="textarea" name="text" id="exampleText" />
+            <Button>Submit</Button>
           </FormGroup>
-          <Button>Submit</Button>
+
         </Form>
 
-        
-        <p />
-
-        {messages.map((message, i) => (
-          <p key={i}>{message}</p>
-        ))}
+        {messages.map((message) => <Message key={message.id} id={message.id} message={message.message} deleteMessage={deleteMessage} /> )}
 
       </div>
     )

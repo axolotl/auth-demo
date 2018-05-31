@@ -1,0 +1,5 @@
+/* display the scroll bar at all times so that it divs don't shift when overflow happens */
+
+body {
+  overflow-y: scroll;
+}
