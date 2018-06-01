@@ -1,64 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { 
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  Container,
-  Row,
-  Col } from 'reactstrap';
 
+import Header from './Header';
 import Intro from './Intro';
 import Join from './Join';
 import Login from './Login';
 import Dash from './Dash';
 
-class App extends Component {
-  render() {
-    return (
+// this component imports all the other page components and manages them in react-router
+// additionally, it wraps them all in header (which also acts as a wrapper for the content)
 
-      <Router>
-
-        <Container>
-
-          <Row>
-            <Col>
-              <Navbar color="white" light expand="md">
-                <NavbarBrand href="/">[auth-demo]</NavbarBrand>
-                  <Nav className="ml-auto" navbar>
-                    <NavItem>
-                      <NavLink href="/join">Join</NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink href="/login">Login</NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink href="/dash">Dashboad</NavLink>
-                    </NavItem>
-                  </Nav>
-              </Navbar>
-            </Col>
-          </Row>
-
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            
-            <div style={{width: '500px'}}>
-
-              <Route exact path="/" component={Intro} />
-              <Route path="/join" component={Join} />
-              <Route path="/login" component={Login} />
-              <Route path="/dash" component={Dash} />
-  
-            </div>
-            
-          </div>
-
-        </Container>
-      </Router>
-    )
-  }
-}
+const App = () => (
+  <Router>
+    <Header>
+      <Route exact path="/" component={Intro} />
+      <Route path="/join" component={Join} />
+      <Route path="/login" component={Login} />
+      <Route path="/dash" component={Dash} />
+    </Header>
+  </Router>
+);
 
 export default App;
