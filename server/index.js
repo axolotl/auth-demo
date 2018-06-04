@@ -1,31 +1,49 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('express-session');
+const models = require('./models');
 
+// initialize app
 const app = express();
 
-// Setup logger
+// setup logger
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
 
-// parse application/x-www-form-urlencoded
+// setup json parser
 app.use(bodyParser.urlencoded({ extended: false }))
-
-//json parser
 app.use(bodyParser.json())
 
-// Serve static assets
+// setup passport
+app.use(session({ secret: 'auth-demo-secret', resave: true, saveUninitialized:true})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+// serve static assets
 app.use(express.static(path.resolve(__dirname, '..', 'build')))
 
-// Serve our api
-require('./routes')(app);
+// serve our api
+require('./routes')(app, passport);
 
-// Set port
+// set port
 const PORT = process.env.PORT || 8000;
 
-// Setup listener
+
+
+// load passport strategies
+require('./passport/config.js')(passport, models.User);
+
+// sync database
+models.sequelize.sync()
+  .then(() => console.log('Nice! Database looks fine'))
+  .catch((err) => console.log(err, "Something went wrong with the Database Update!"));
+
+// setup listener
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);
 });
 
+// export app
 module.exports = app;
