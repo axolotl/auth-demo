@@ -13,12 +13,7 @@ module.exports = (app, passport) => {
   app.get('/api/messages', checkAuthentication, messageController.list);
   app.delete('/api/messages/:messageId', checkAuthentication, messageController.destroy);
 
-  app.post('/api/register', passport.authenticate('local-signup', {
-      successRedirect: '/dash',
-      failureRedirect: '/'
-    }
-  ));
-
+  app.post('/api/register', passport.authenticate('local-signup'), (req, res) => res.status(200).send({message: 'OK'}));
   app.post('/api/login', passport.authenticate('local-signin'), (req, res) => res.status(200).send({message: 'OK'}));
 
   app.post('/api/logout', (req, res) => {

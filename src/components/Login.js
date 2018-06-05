@@ -19,7 +19,8 @@ class Login extends Component {
     password: {
       value: '',
       isInvalid: false,
-    }
+    },
+    loginFailure: false,
   }
 
   handleChange = (e) => {
@@ -28,14 +29,14 @@ class Login extends Component {
     // assign valiable "name" to either username or password based on what the event tells us
     // destructure the part of state we want with reassignment to avoid namespace collision
     // set this nested state and trim input value at the same time to avoid spaces
-    // reset isInvalid while we're at it
+    // reset isInvalid and loginFailure while we're at it
     // set state, again name will reference either username or password
 
     const name = e.target.name;
     const { [name]: data } = this.state;
     data.value = e.target.value.trim();
     data.isInvalid = false;
-    this.setState({ [name]: data });
+    this.setState({ [name]: data, loginFailure: false });
   }
 
   handleSubmit = (e) => {
@@ -55,17 +56,18 @@ class Login extends Component {
     if (!username.isInvalid && !password.isInvalid) {
       axios.post(`/api/login`, { username: username.value, password: password.value })
         .then(res => {
-          console.log(res.data)
           this.props.toggleLoggedIn();
           this.props.history.push('/')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.setState({ loginFailure: true })
+        })
     }
 
   }
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, loginFailure } = this.state;
     const { handleChange, handleSubmit } = this;
 
     return (
@@ -100,6 +102,10 @@ class Login extends Component {
             placeholder="password" />
           <FormFeedback>Please enter password to login</FormFeedback>
         </FormGroup>
+
+        {loginFailure &&
+          <p style={{color: 'red'}}>Login failure. Please check username and password.</p>
+        }
 
         <Button>Submit</Button>
 
