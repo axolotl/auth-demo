@@ -44,7 +44,6 @@ class Dash extends Component {
 
   addMessage = (message) => {
     axios.post(`/api/messages`, {
-      username: 'theofeau',
       message
     }).then(res => console.log(res))
       .catch(err => console.log(err));

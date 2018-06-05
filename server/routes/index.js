@@ -6,17 +6,14 @@ module.exports = (app, passport) => {
     message: 'Welcome to the /api path',
   }));
 
-  // list users, for dev only
+  // DEV OPTIONS
+  app.delete('/api/messages', messageController.destroyAll);
+  //
+
   app.get('/api/users', userController.list);
 
   app.post('/api/messages', checkAuthentication, messageController.create);
-  //app.get('/api/messages', checkAuthentication, messageController.list);
-
-  // FOR DEV ONLY
-  app.get('/api/messages', messageController.list);
-  app.delete('/api/messages', messageController.destroyAll);
-
-
+  app.get('/api/messages', checkAuthentication, messageController.list);
   app.delete('/api/messages/:messageId', checkAuthentication, messageController.destroy);
 
   app.post('/api/register', passport.authenticate('local-signup'), (req, res) => 
@@ -29,7 +26,6 @@ module.exports = (app, passport) => {
     res.status(200).send({message: 'OK'});
   });
 
-  //app.get('/api/isLoggedIn', checkAuthentication, (req, res) => res.status(200).send({message: 'OK'}));
   app.get('/api/isLoggedIn', checkAuthentication, (req, res) => res.json({ username: req.user.username }) );
 
 };

@@ -4,7 +4,7 @@ module.exports = {
   create(req, res) {
     return Message
       .create({
-        username: req.body.username,
+        username: req.user.username,
         message: req.body.message,
       })
       .then(message => res.status(201).send(message))
@@ -12,7 +12,7 @@ module.exports = {
   },
   list(req, res) {
     return Message
-      .findAll()
+      .findAll({ where: { username: req.user.username } })
       .then((messages) => res.status(200).send(messages))
       .catch((error) => res.status(400).send(error));
   },
