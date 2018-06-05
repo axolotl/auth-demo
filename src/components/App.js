@@ -16,25 +16,33 @@ class App extends Component {
   state = {
     loading: true,
     loggedIn: false,
+    user: '',
   }
 
   componentDidMount() {
+    // make api call to databse to see if user is logged in. if yes, return username
     axios.get(`/api/isLoggedIn`)
-      .then(() => this.setState({ loading: false, loggedIn: true }))
+      .then(res => {
+        this.setState({ loading: false, loggedIn: true, user: res.data.username });
+      })
       .catch(() => this.setState({ loading: false, loggedIn: false }))
   }
 
-  toggleLoggedIn = () => {
-    this.setState({ loggedIn: !this.state.loggedIn })
+  setLoggedIn = (username) => {
+    this.setState({ loggedIn: true, user: username })
+  }
+
+  setLoggedOut = () => {
+    this.setState({ loggedIn: false, user: '' })
   }
 
   render() {
-    const { loading, loggedIn } = this.state;
-    const { toggleLoggedIn } = this;
+    const { loading, loggedIn, user } = this.state;
+    const { toggleLoggedIn, setLoggedIn, setLoggedOut } = this;
 
     return (
       <Router>
-        <Header loggedIn={loggedIn} toggleLoggedIn={toggleLoggedIn}>
+        <Header loggedIn={loggedIn} user={user} setLoggedOut={setLoggedOut}>
 
           {loading &&
             <p>loading</p>
@@ -46,11 +54,11 @@ class App extends Component {
           }
 
           <Route path="/join" render={(props) => (
-            <Join {...props} toggleLoggedIn={toggleLoggedIn} />
+            <Join {...props} setLoggedIn={setLoggedIn} />
           )}/>
 
           <Route path="/login" render={(props) => (
-            <Login {...props} toggleLoggedIn={toggleLoggedIn} />
+            <Login {...props} setLoggedIn={setLoggedIn} />
           )}/>
 
           <Route path="/welcome" component={Welcome} />

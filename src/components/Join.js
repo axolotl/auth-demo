@@ -10,7 +10,7 @@ import {
 import axios from 'axios';
 
 class Join extends Component {
-  // isInvalid set to true by default. isInvalid: false will yell at user
+  // isInvalid set to false by default. isInvalid: true will yell at user
   // isValid will be used to let user know when their input has reached specification
   // users is used to check for name duplicates
   state = {
@@ -89,7 +89,7 @@ class Join extends Component {
     if (username.isValid && password.isValid) {
       axios.post(`/api/register`, { username: username.value, password: password.value })
         .then(res => {
-          this.props.toggleLoggedIn();
+          this.props.setLoggedIn(res.data.username);
           this.props.history.push('/welcome');
         })
         .catch(err => {

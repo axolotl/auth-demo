@@ -10,7 +10,7 @@ import {
 import axios from 'axios';
 
 class Login extends Component {
-  // isValid set to true by default. isValid: false will yell at user
+  // isInvalid set to false by default. isInvalid: true will yell at user
   state = {
     username: {
       value: '',
@@ -56,7 +56,7 @@ class Login extends Component {
     if (!username.isInvalid && !password.isInvalid) {
       axios.post(`/api/login`, { username: username.value, password: password.value })
         .then(res => {
-          this.props.toggleLoggedIn();
+          this.props.setLoggedIn(res.data.username);
           this.props.history.push('/')
         })
         .catch(err => {

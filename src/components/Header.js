@@ -19,11 +19,11 @@ const linkStyle = {
   cursor: 'pointer'
 };
 
-const Header = ({ loggedIn, toggleLoggedIn, history, children }) => {
+const Header = ({ loggedIn, user, setLoggedOut, history, children }) => {
   const logOut = () => {
     axios.post(`/api/logout`)
       .then(() => {
-        toggleLoggedIn();
+        setLoggedOut();
         history.push('/');
       })
       .catch(err => console.log(err))
@@ -39,9 +39,14 @@ const Header = ({ loggedIn, toggleLoggedIn, history, children }) => {
 
                 {loggedIn
                   ?
-                    <NavItem>
-                      <NavLink style={linkStyle} onClick={logOut} >Logout</NavLink>
-                    </NavItem>
+                    <div style={{display: 'flex', flexDirection: 'row'}} >
+                      <NavItem>
+                        <NavLink style={{marginRight: '10px'}}>You are logged in as {user}</NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink style={linkStyle} onClick={logOut} >Logout</NavLink>
+                      </NavItem>
+                    </div>
                   : 
                     <div style={{display: 'flex', flexDirection: 'row'}} >
                       <NavItem style={{marginRight: '10px'}} >
