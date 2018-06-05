@@ -77,28 +77,28 @@ class Login extends Component {
         <p>To login, enter username and password and click submit.</p>
 
         <FormGroup>
-          <Label for="exampleUsername">Username</Label>
+          <Label for="username">Username</Label>
           <Input 
             invalid={username.isInvalid} 
             type="username" 
             name="username" 
             onChange={handleChange} 
             value={username.value} 
-            id="exampleUsername" 
+            id="username" 
             placeholder="username" 
             autoComplete='off' />
           <FormFeedback>Please enter username to login</FormFeedback>
         </FormGroup>
 
         <FormGroup>
-          <Label for="examplePassword">Password</Label>
+          <Label for="password">Password</Label>
           <Input 
             invalid={password.isInvalid} 
             type="password" 
             name="password" 
             onChange={handleChange} 
             value={password.value} 
-            id="examplePassword" 
+            id="password" 
             placeholder="password" />
           <FormFeedback>Please enter password to login</FormFeedback>
         </FormGroup>

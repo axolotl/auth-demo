@@ -7,6 +7,7 @@ import Intro from './Intro';
 import Join from './Join';
 import Login from './Login';
 import Dash from './Dash';
+import Welcome from './Welcome';
 
 // this component imports all the other page components and manages them in react-router
 // additionally, it wraps them all in header (which also acts as a wrapper for the content)
@@ -44,14 +45,15 @@ class App extends Component {
             : <Route exact path="/" component={Intro} />
           }
 
-          <Route path="/join" component={Join} />
+          <Route path="/join" render={(props) => (
+            <Join {...props} toggleLoggedIn={toggleLoggedIn} />
+          )}/>
 
           <Route path="/login" render={(props) => (
             <Login {...props} toggleLoggedIn={toggleLoggedIn} />
           )}/>
 
-
-          <Route path="/dash" component={Dash} />
+          <Route path="/welcome" component={Welcome} />
 
         </Header>
       </Router>

@@ -9,13 +9,6 @@ import {
   Input } from 'reactstrap';
 import axios from 'axios';
 
-
-// what's gonna set join apart from login?
-// 1. explainer text
-// 2. password failure
-// 3. username duplicate
-// 4. on success -> redirect to success page
-
 class Join extends Component {
   // isInvalid set to true by default. isInvalid: false will yell at user
   // isValid will be used to let user know when their input has reached specification
@@ -37,6 +30,8 @@ class Join extends Component {
   }
 
   // get users in database so we can avoid namespace problems
+  // because this is a demo project and not for production and will be using a slow free database
+  // i have elected for this method even though I know it wouldn't be appropriate in production
   componentDidMount() {
     const users = [];
     axios.get(`/api/users`)
@@ -67,7 +62,7 @@ class Join extends Component {
     }
 
     username.value = name;
-    this.setState({ username, usernameError });
+    this.setState({ username, usernameError, registerFailure: false });
   }
 
   handlePasswordChange = (e) => {
@@ -83,7 +78,7 @@ class Join extends Component {
     }
 
     password.value = entry;
-    this.setState({ password });
+    this.setState({ password, registerFailure: false });
   }
 
 
@@ -92,8 +87,14 @@ class Join extends Component {
     let { username, password, usernameError } = this.state;
     
     if (username.isValid && password.isValid) {
-      // axios stuff here
-      console.log('ready for axios')
+      axios.post(`/api/register`, { username: username.value, password: password.value })
+        .then(res => {
+          this.props.toggleLoggedIn();
+          this.props.history.push('/welcome');
+        })
+        .catch(err => {
+          this.setState({ registerFailure: true })
+        })
     }
 
     else {
@@ -119,7 +120,7 @@ class Join extends Component {
         <p>To join, enter a username and a password and click submit.</p>
 
         <FormGroup>
-          <Label for="exampleUsername">Username</Label>
+          <Label for="username">Username</Label>
           <Input 
             invalid={username.isInvalid}
             valid={username.isValid} 
@@ -127,7 +128,7 @@ class Join extends Component {
             name="username" 
             onChange={handleUsernameChange} 
             value={username.value} 
-            id="exampleUsername" 
+            id="username" 
             placeholder="username" 
             autoComplete='off' />
           <FormFeedback>{usernameError}</FormFeedback>
@@ -135,7 +136,7 @@ class Join extends Component {
         </FormGroup>
 
         <FormGroup>
-          <Label for="examplePassword">Password</Label>
+          <Label for="password">Password</Label>
           <Input 
             invalid={password.isInvalid} 
             valid={password.isValid}
@@ -143,7 +144,7 @@ class Join extends Component {
             name="password" 
             onChange={handlePasswordChange} 
             value={password.value} 
-            id="examplePassword" 
+            id="password" 
             placeholder="password" />
           <FormFeedback>Password must be at least 6 characters.</FormFeedback>
           <FormFeedback valid>Looks good!</FormFeedback>
