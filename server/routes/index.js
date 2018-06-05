@@ -21,9 +21,9 @@ module.exports = (app, passport) => {
 
   app.post('/api/login', passport.authenticate('local-signin'), (req, res) => res.status(200).send({message: 'OK'}));
 
-  app.get('/api/logout', (req, res) => {
+  app.post('/api/logout', (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.status(200).send({message: 'OK'});
   });
 
   app.get('/api/isLoggedIn', checkAuthentication, (req, res) => res.status(200).send({message: 'OK'}));

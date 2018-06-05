@@ -11,13 +11,6 @@ import Dash from './Dash';
 // this component imports all the other page components and manages them in react-router
 // additionally, it wraps them all in header (which also acts as a wrapper for the content)
 
-// const homeHandler = ({ isLoggedIn }) => (
-//   {isLoggedIn == false
-//     ? <Intro />
-//     : <Dash />
-//   }
-// )
-
 class App extends Component {
   state = {
     loading: true,
@@ -40,7 +33,7 @@ class App extends Component {
 
     return (
       <Router>
-        <Header>
+        <Header loggedIn={loggedIn} toggleLoggedIn={toggleLoggedIn}>
 
           {loading &&
             <p>loading</p>
