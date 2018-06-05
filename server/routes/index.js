@@ -14,21 +14,19 @@ module.exports = (app, passport) => {
   app.delete('/api/messages/:messageId', checkAuthentication, messageController.destroy);
 
   app.post('/api/register', passport.authenticate('local-signup', {
-      successRedirect: '/dashboard',
+      successRedirect: '/dash',
       failureRedirect: '/'
     }
   ));
 
-  app.post('/api/login', passport.authenticate('local-signin', {
-      successRedirect: '/dashboard',
-      failureRedirect: '/'
-    }
-  ));
+  app.post('/api/login', passport.authenticate('local-signin'), (req, res) => res.status(200).send({message: 'OK'}));
 
   app.get('/api/logout', (req, res) => {
     req.logout();
     res.redirect('/');
   });
+
+  app.get('/api/isLoggedIn', checkAuthentication, (req, res) => res.status(200).send({message: 'OK'}));
 
 };
 
@@ -37,6 +35,6 @@ const checkAuthentication = (req, res, next) => {
   if(req.isAuthenticated()){
     next();
   } else{
-    res.redirect("/login");
+    res.status(401).send({message: 'Unauthorized'});
   }
 };

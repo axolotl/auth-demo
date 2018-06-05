@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { 
   Navbar,
   NavbarBrand,
@@ -13,21 +14,25 @@ import {
 // it positions a header above the main content and then wraps the main content
 // so that it will appear under the header in a properly centered manner
 
-const Header = ({ children }) => (
+const linkStyle = {
+  cursor: 'pointer'
+};
+
+const Header = ({ history, children }) => (
   <Container>
     <Row>
       <Col>
         <Navbar color="white" light expand="md">
-          <NavbarBrand href="/">[auth-demo]</NavbarBrand>
+          <NavbarBrand style={linkStyle} onClick={() => history.push('/')} >[auth-demo]</NavbarBrand>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/join">Join</NavLink>
+                <NavLink style={linkStyle} onClick={() => history.push('/join')} >Join</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/login">Login</NavLink>
+                <NavLink style={linkStyle} onClick={() => history.push('/login')} >Login</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/dash">Dashboad</NavLink>
+                <NavLink style={linkStyle} onClick={() => history.push('/dash')} >Dashboad</NavLink>
               </NavItem>
             </Nav>
         </Navbar>
@@ -47,4 +52,4 @@ const Header = ({ children }) => (
   </Container>
 );
 
-export default Header;
+export default withRouter(Header);

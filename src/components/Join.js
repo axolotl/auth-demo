@@ -14,7 +14,7 @@ class Join extends Component {
         <p>To join, enter a username and a password and click submit.</p>
         <FormGroup>
           <Label for="exampleUsername">Username</Label>
-          <Input type="username" name="username" id="exampleUsername" placeholder="username" autocomplete='off' />
+          <Input type="username" name="username" id="exampleUsername" placeholder="username" autoComplete='off' />
         </FormGroup>
         <FormGroup>
           <Label for="examplePassword">Password</Label>

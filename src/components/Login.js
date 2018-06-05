@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { 
   Form,
   FormGroup,
@@ -6,6 +7,7 @@ import {
   Button,
   Label,
   Input } from 'reactstrap';
+import axios from 'axios';
 
 class Login extends Component {
   // isValid set to true by default. isValid: false will yell at user
@@ -39,7 +41,6 @@ class Login extends Component {
   handleSubmit = (e) => {
     const { username, password } = this.state;
     e.preventDefault();
-    console.log(`username: ${username.value} password: ${password.value}`);
 
     if (username.value.length === 0) {
       username.isInvalid = true;
@@ -52,7 +53,13 @@ class Login extends Component {
     };
 
     if (!username.isInvalid && !password.isInvalid) {
-      console.log('you win')
+      axios.post(`/api/login`, { username: username.value, password: password.value })
+        .then(res => {
+          console.log(res.data)
+          this.props.toggleLoggedIn();
+          this.props.history.push('/')
+        })
+        .catch(err => console.log(err))
     }
 
   }
@@ -63,8 +70,10 @@ class Login extends Component {
 
     return (
       <Form onSubmit={handleSubmit} >
+
         <h4>Login</h4>
         <p>To login, enter username and password and click submit.</p>
+
         <FormGroup>
           <Label for="exampleUsername">Username</Label>
           <Input 
@@ -78,6 +87,7 @@ class Login extends Component {
             autoComplete='off' />
           <FormFeedback>Please enter username to login</FormFeedback>
         </FormGroup>
+
         <FormGroup>
           <Label for="examplePassword">Password</Label>
           <Input 
@@ -90,10 +100,12 @@ class Login extends Component {
             placeholder="password" />
           <FormFeedback>Please enter password to login</FormFeedback>
         </FormGroup>
+
         <Button>Submit</Button>
+
       </Form>
     )
   }
 }
 
-export default Login;
+export default withRouter(Login);
