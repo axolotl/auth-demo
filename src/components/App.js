@@ -48,9 +48,12 @@ class App extends Component {
             <p>loading</p>
           }
 
-          {loggedIn 
-            ? <Route exact path="/" component={Dash} />
-            : <Route exact path="/" component={Intro} />
+          {!loading && loggedIn &&
+            <Route exact path="/" component={Dash} />
+          }
+
+          {!loading && !loggedIn &&
+            <Route exact path="/" component={Intro} />
           }
 
           <Route path="/join" render={(props) => (
