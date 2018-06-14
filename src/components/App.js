@@ -46,25 +46,27 @@ class App extends Component {
     const { toggleLoggedIn, setLoggedIn, setLoggedOut } = this;
 
     return (
-      <Header loggedIn={loggedIn} user={user} setLoggedOut={setLoggedOut}>
-        {loading && <p>loading</p>}
+      <Router>
+        <Header loggedIn={loggedIn} user={user} setLoggedOut={setLoggedOut}>
+          {loading && <p>loading</p>}
 
-        {!loading && loggedIn && <Route exact path="/" component={Dash} />}
+          {!loading && loggedIn && <Route exact path="/" component={Dash} />}
 
-        {!loading && !loggedIn && <Route exact path="/" component={Intro} />}
+          {!loading && !loggedIn && <Route exact path="/" component={Intro} />}
 
-        <Route
-          path="/join"
-          render={props => <Join {...props} setLoggedIn={setLoggedIn} />}
-        />
+          <Route
+            path="/join"
+            render={props => <Join {...props} setLoggedIn={setLoggedIn} />}
+          />
 
-        <Route
-          path="/login"
-          render={props => <Login {...props} setLoggedIn={setLoggedIn} />}
-        />
+          <Route
+            path="/login"
+            render={props => <Login {...props} setLoggedIn={setLoggedIn} />}
+          />
 
-        <Route path="/welcome" component={Welcome} />
-      </Header>
+          <Route path="/welcome" component={Welcome} />
+        </Header>
+      </Router>
     );
   }
 }
