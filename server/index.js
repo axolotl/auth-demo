@@ -33,6 +33,15 @@ app.use(express.static(path.resolve(__dirname, "..", "build")));
 // serve our api
 require("./routes")(app, passport);
 
+// handle front end routes other than "/"
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "build"), (err) => {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+});
+
 // set port
 const PORT = process.env.PORT || 8000;
 
