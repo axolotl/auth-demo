@@ -30,6 +30,10 @@ app.use(passport.session()); // persistent login sessions
 // serve static assets
 app.use(express.static(path.resolve(__dirname, "..", "build")));
 
+// app.get('*', (req, res) => {
+//     res.sendFile('build/index.html');
+// });
+
 // serve our api
 require("./routes")(app, passport);
 

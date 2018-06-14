@@ -43,8 +43,8 @@ class Login extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    const newState = Object.assign({}, this.state);
-    const { username, password, loginFailure } = newState;
+    let newState = Object.assign({}, this.state);
+    let { username, password, loginFailure } = newState;
 
     username = {
       ...username,
