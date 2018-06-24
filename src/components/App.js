@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import axios from "axios";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import axios from 'axios';
 
-import Header from "./Header";
-import Intro from "./Intro";
-import Join from "./Join";
-import Login from "./Login";
-import Dash from "./Dash";
-import Welcome from "./Welcome";
+import Header from './Header';
+import Intro from './Intro';
+import Join from './Join';
+import Login from './Login';
+import Dash from './Dash';
+import Welcome from './Welcome';
+import Loading from './Loading';
 
 // this component imports all the other page components and manages them in react-router
 // additionally, it wraps them all in header (which also acts as a wrapper for the content)
@@ -16,7 +17,7 @@ class App extends Component {
   state = {
     loading: true,
     loggedIn: false,
-    user: ""
+    user: ''
   };
 
   componentDidMount() {
@@ -38,7 +39,7 @@ class App extends Component {
   };
 
   setLoggedOut = () => {
-    this.setState({ loggedIn: false, user: "" });
+    this.setState({ loggedIn: false, user: '' });
   };
 
   render() {
@@ -48,7 +49,7 @@ class App extends Component {
     return (
       <Router>
         <Header loggedIn={loggedIn} user={user} setLoggedOut={setLoggedOut}>
-          {loading && <p>loading</p>}
+          {loading && <Loading />}
 
           {!loading && loggedIn && <Route exact path="/" component={Dash} />}
 
